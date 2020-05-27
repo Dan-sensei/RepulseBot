@@ -243,7 +243,7 @@ bot.on('message', msg=>{
 	}
 });
 
-bot.login(proccess.env.token);
+bot.login(process.env.token);
 
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
