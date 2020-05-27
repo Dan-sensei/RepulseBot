@@ -13,15 +13,17 @@ const HMS = '709158048429768735';
 const IJN = '710308097108869211';
 const USS = '710308145028792452';
 const KMS = '710308147536986194';
+const DGN = '715232182867853353';
 
 const SERVERS = ["amagi", "avrora", "lexington", "sandy", "washington"];
-const FACTIONS = ["hms", "uss", "ijn", "kms"];
+const FACTIONS = ["hms", "uss", "ijn", "kms", "dgn"];
 const FACTION2DATA = 
 {
 	"hms": { Fullname: "Royal Navy", 	RoleID: HMS, Color: 15128575, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072251195555930/Royal_Navy.png" },
 	"uss": { Fullname: "Eagle Union", 	RoleID: USS, Color: 7193589, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072248096096276/Eagle_Union.png" },
 	"ijn": { Fullname: "Sakura Empire", RoleID: IJN, Color: 14064895, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072252928065616/Sakura_Empire.png" },
 	"kms": { Fullname: "Ironblood", 	RoleID: KMS, Color: 16758435, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072249803309086/Ironblood.png" },
+	"dgn": { Fullname: "Calvo Land", 	RoleID: DGN, Color: 7077768, 	Banner: "https://cdn.discordapp.com/attachments/676881737262956546/715075084242649088/Calvo.png" },
 }
 
 // Tiempo que tarda Repulse en madarte a la mierda por lento
