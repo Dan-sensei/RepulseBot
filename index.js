@@ -47,7 +47,7 @@ Por cierto, tanto para la pregunta de vuestro servidor cómo en la de la facció
 Servidores:
 \`\`\`amagi avrora lexington sandy washington\`\`\`
 Facciones:
-\`\`\`HMS USS IJN KMS\`\`\`
+\`\`\`HMS USS IJN KMS DGN\`\`\`
 Para comenzar escribe: !registro
 
 Gracias por participar y a divertirse !`;
@@ -190,7 +190,6 @@ bot.on('message', msg=>{
 														msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
 														.then((collected) => {
 															const url = collected.first().attachments.first().url;
-															console.log(url);
 															if(!is_JPG_or_PNG(url)){
 																SendMessage(msg, POINTS_PICTURE_FORMAT);
 																return;
