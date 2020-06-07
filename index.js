@@ -6,14 +6,14 @@ const bot = new Discord.Client({disableEveryone: true});
 
 // DE AQUI PABAJO PUEDES EDITAR COSAS ==========================================================================
 // IDs
-const SERVER_ID 		= '130109431965941760';
-const ALERT_CHANNEL_ID 	= '709162953366044778';
+const SERVER_ID 		= '265204990455316492';
+const ALERT_CHANNEL_ID 	= '719103654908395530';
 
-const HMS = '709158048429768735';
-const IJN = '710308097108869211';
-const USS = '710308145028792452';
-const KMS = '710308147536986194';
-const DGN = '715232182867853353';
+const HMS = '719104448089161778';
+const IJN = '719104540917366826';
+const USS = '719104274524799088';
+const KMS = '719104614162628678';
+const DGN = '719105046633250886';
 
 const SERVERS = ["amagi", "avrora", "lexington", "sandy", "washington"];
 const FACTIONS = ["hms", "uss", "ijn", "kms", "dgn"];
@@ -23,43 +23,25 @@ const FACTION2DATA =
 	"uss": { Fullname: "Eagle Union", 	RoleID: USS, Color: 7193589, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072248096096276/Eagle_Union.png" },
 	"ijn": { Fullname: "Sakura Empire", RoleID: IJN, Color: 14064895, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072252928065616/Sakura_Empire.png" },
 	"kms": { Fullname: "Ironblood", 	RoleID: KMS, Color: 16758435, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072249803309086/Ironblood.png" },
-	"dgn": { Fullname: "Calvo Land", 	RoleID: DGN, Color: 7077768, 	Banner: "https://cdn.discordapp.com/attachments/676881737262956546/715075084242649088/Calvo.png" },
+	"dgn": { Fullname: "DGNrados", 	RoleID: DGN, Color: 7077768, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/719105888979255366/DGNrados.png" },
 }
 
 // Tiempo que tarda Repulse en madarte a la mierda por lento
-const RESPONSE_TIME_SECONDS = 30;
+const RESPONSE_TIME_SECONDS = 60;
 
 // MESSAGES
 const KICK = 'https://cdn.discordapp.com/attachments/709111440665214987/709496458692526201/ezgif.com-resize.png';
 
-const HELP_M = 
-`Bienvenido shikikan, damos comienzo al evento {Nombre del evento}
-Iremos pidiéndote algunos datos para registrarte:
-\`\`\`-NOMBRE EN EL JUEGO
--UID EN EL JUEGO
--SERVER
--FACCION QUE APOYAS
--PUNTOS ACTUALES
--CAPTURA DE PANTALLA DONDE SE VEAN LOS PUNTOS (recuerda que Discord no acepta archivos de más de 8 MB)\`\`\`Es muy importante que no borres ningún mensaje ya que sino no se guardará en nuestra base de datos de bajo presupuesto :slight_smile:
-
-Por cierto, tanto para la pregunta de vuestro servidor cómo en la de la facción elegida deberéis responder con el nombre exacto
-
-Servidores:
-\`\`\`amagi avrora lexington sandy washington\`\`\`
-Facciones:
-\`\`\`HMS USS IJN KMS DGN\`\`\`
-Para comenzar escribe: !registro
-
-Gracias por participar y a divertirse !`;
+const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/719147050251452426/Skybound_1920x1080.jpg`;
 
 const NOMBRE_M 				= '¿Cuál es tu nombre en el juego?';
 const UID_M 				= '¿Cuál es tu UID en el juego?';
 const UID_ERROR_M			= 'No introduzcas valores no numéricos!\nVuelve a empezar!\n' + KICK;
 const SERVER_M 				= '¿En qué servidor juegas?```amagi avrora lexington sandy washington```';
 const SERVER_ERROR_M 		= 'Ese servidor no existe!\nLos servidores disponibles son:\n```amagi avrora lexington sandy washington```\nVuelve a empezar!\n' + KICK;
-const FACTION_M 			= '¿A qué facción apoyas?```HMS USS IJN KMS```';
-const FACTION_ERROR_M 		= 'Esa facción no existe!, las facciones disponibles son:\n```HMS USS IJN KMS```\nVuelve a empezar!\n' + KICK;
-const POINTS_M 				= '¿Cuántos puntos tienes?';
+const FACTION_M 			= '¿A qué facción apoyas?```HMS USS IJN KMS DGN```';
+const FACTION_ERROR_M 		= 'Esa facción no existe!, las facciones disponibles son:\n```HMS USS IJN KMS DGN```\nVuelve a empezar!\n' + KICK;
+const POINTS_M 				= '¿Cuántos puntos tienes? Ej: 62500';
 const POINTS_ERROR_M 		= 'No has introducido un número! ＼| ￣ヘ￣|／\nVuelve a empezar!\n' + KICK;
 const POINTS_LESS_THAN_0_M 	= 'No pongas números negativos! (╬ Ò ‸ Ó)\nVuelve a empezar!\n' + KICK;
 const POINTS_PICTURE_M 		= 'Por último, envíame una screenshot donde se vean los puntos en formato JPG/PNG';
@@ -68,12 +50,12 @@ const POINTS_PICTURE_FORMAT = 'Sólo JPG o PNG!\nVuelve a empezar!\n' + KICK;
 const REGISTRO_COMPLETADO_M = 'Registro completado! Tu participación ha sido guardada! Ｏ(≧▽≦)Ｏ';
 const REGISTRO_ERROR_M 		= 'Parece que ha habido un problema al intentar guardar tus datos ~(>_<~).\nVuelve a intentarlo en unos minutos, si el problema persiste, ponte en contacto con Space.';
 
-const ALREADY_REGISTERED	= 'Ya estás registrado!\nSi te has equivocado con algún dato contacta con Space.';
+const ALREADY_REGISTERED	= 'Ya estás registrado!\nSi te has equivocado con algún dato contacta con algún moderador.';
 
 const ROL_ASSIGN_SUCCESS_M1 = 'Además, te he asignado el rol ';
 // Aquí va la facción que ha elegido, que no puedo saberla de antemano (Royal Navy best facción)
-const ROL_ASSIGN_SUCCESS_M2 = ' en el servidor, ve a verlo!';
-const ROL_ASSIGN_ERROR_M 	= 'Aunque parece que ha habido un problema al asignarte el rol de tu facción, contacta con Space!';
+const ROL_ASSIGN_SUCCESS_M2 = ' en el servidor, ve a verlo!\nSi aún no tienes el rol en el servidor contacta con un moderador para que te lo asigne manualmente';
+const ROL_ASSIGN_ERROR_M 	= 'Aunque parece que ha habido un problema al asignarte el rol de tu facción, contacta con algún moderador!';
 
 const TIMEOUT = '\nVaya! Parece que has tardado demasiado en responder. Para reintentar el registro, escribe el comando "!registro" de nuevo en este chat ^_^';
 
@@ -124,17 +106,7 @@ bot.on('message', msg=>{
 	
 	if(cmd === `${prefix}registro`) {
 
-		let registered = false;
-		firebase.database().ref(msg.author.id).once('value').then(function(data) {
-			let current_faction = data.val();
-			if(current_faction != null) {
-				registered = true;
-				SendMessage(msg, ALREADY_REGISTERED);
-				return;
-			}
-		}).then(() => {
 
-			if(registered) return;
 
 			let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
 
@@ -206,20 +178,42 @@ bot.on('message', msg=>{
 																	'faccion': registerData.Faccion,
 																	'pts_start': registerData.PuntosIniciales,
 																	'image_start': registerData.Image_Start
+																})
+																.then( function () {
+																	SendMessage(msg, REGISTRO_COMPLETADO_M);
+																	SendNotification(msg, registerData.Faccion);
+																	
+																	try {
+																		const guild = bot.guilds.resolve(SERVER_ID);
+																		const user  = guild.members.resolve(registerData.ID);
+																		let f = true;
+																		if(user) {
+																			user.roles.remove([HMS, USS, IJN, KMS, DGN]);
+																			user.roles.add(FACTION2DATA[registerData.Faccion].RoleID)
+																			.then(function () {
+																				SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
+																			})
+																			.catch(function () {
+																				SendMessage(msg, ROL_ASSIGN_ERROR_M);
+																			});
+																		}
+																	} catch(e) {
+																		console.log(e);
+																		SendMessage(msg, ROL_ASSIGN_ERROR_M);
+																	}
+																})
+																.catch(function () {
+																	console.log(e);
+																	SendMessage(msg, ROL_ASSIGN_ERROR_M);
 																});
-																SendMessage(msg, REGISTRO_COMPLETADO_M);
-																SendNotification(msg, registerData.Faccion);
 															}
 															catch(e) {
 																console.log(e);
 																SendMessage(msg, REGISTRO_ERROR_M);
 																return;
 															}
-														
-															if(AssignRole(registerData.ID, registerData.Faccion))
-																SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
-															else 
-																SendMessage(msg, ROL_ASSIGN_ERROR_M);
+
+															
 
 														}).catch((e) => {
 															console.log(e);
@@ -236,11 +230,7 @@ bot.on('message', msg=>{
 					});
 				}).catch(() => { Retry(msg); });
 			});
-		});
-	}
-	else if(cmd === `${prefix}n`){
-		AssignRole(msg.author.id, 	'hms');
-		SendNotification(msg, 		'hms');
+
 	}
 });
 
@@ -252,22 +242,6 @@ function Retry(handler){
 
 function SendMessage(handler, message) {
 	handler.channel.send(message);
-}
-
-function AssignRole(userID, faccion) {
-		
-	try {
-		const guild = bot.guilds.resolve(SERVER_ID);
-		const user  = guild.members.resolve(userID);
-		
-		if(user) {
-			user.roles.remove([HMS, USS, IJN, KMS]);
-			user.roles.add(FACTION2DATA[faccion].RoleID);
-		}
-		return true;
-	} catch(e) {
-		return false;
-	}
 }
 
 function SendNotification(msg, faction) {
