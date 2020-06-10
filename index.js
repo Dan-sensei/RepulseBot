@@ -188,13 +188,14 @@ bot.on('message', msg=>{
 																		const user  = guild.members.resolve(registerData.ID);
 																		let f = true;
 																		if(user) {
-																			user.roles.remove([HMS, USS, IJN, KMS, DGN]);
-																			user.roles.add(FACTION2DATA[registerData.Faccion].RoleID)
-																			.then(function () {
-																				SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
-																			})
-																			.catch(function () {
-																				SendMessage(msg, ROL_ASSIGN_ERROR_M);
+																			user.roles.remove([HMS, USS, IJN, KMS, DGN]).then(function(){
+																				user.roles.add(FACTION2DATA[registerData.Faccion].RoleID)
+																				.then(function () {
+																					SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
+																				})
+																				.catch(function () {
+																					SendMessage(msg, ROL_ASSIGN_ERROR_M);
+																				});
 																			});
 																		}
 																	} catch(e) {
