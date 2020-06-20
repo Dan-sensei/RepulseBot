@@ -60,6 +60,11 @@ const ROL_ASSIGN_ERROR_M 	= 'Aunque parece que ha habido un problema al asignart
 const TIMEOUT = '\nVaya! Parece que has tardado demasiado en responder. Para reintentar el registro, escribe el comando "!registro" de nuevo en este chat ^_^';
 
 
+const PTS_END_M = '¿Cuántos puntos tienes?';
+const PTS_END__IMAGE_M = 'Para terminar, envíame una captura dónde se vean los puntos';
+const MSG_END = 'Datos guardados\nGracias por participar!';
+const MSG_END_ERROR = 'Parece que ha habido un problema al intentar guardar tus datos ~(>_<~).\nVuelve a intentarlo en unos minutos, si el problema persiste, ponte en contacto con Space.';
+
 // DE AQUI PABAJO NO TOQUES NADA ===============================================================================
 
 const RESPONSE_TIME = RESPONSE_TIME_SECONDS * 1000;
@@ -104,6 +109,63 @@ bot.on('message', msg=>{
 		return msg.channel.send(HELP_M);
 	}
 	
+	if(cmd === `${prefix}final`) {
+
+		let updateData = { ID: msg.author.id, PuntosFinales: 0, Image_End: '' };
+
+		msg.channel.send(PTS_END_M).then(() => {
+			msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+			.then((collected) => {
+				const points = collected.first().content.replace(/\s/g,'');
+				if(!Number.isInteger(parseInt(points))) {
+					SendMessage(msg, POINTS_ERROR_M);
+					return;
+				}
+
+				updateData.PuntosFinales = parseInt(points);
+
+				if(updateData.PuntosIniciales < 0) {
+					SendMessage(msg, POINTS_LESS_THAN_0_M);
+					return;
+				}
+				
+				msg.channel.send(PTS_END__IMAGE_M).then(()=>{
+					msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+					.then((collected) => {
+						const url = collected.first().attachments.first().url;
+						if(!is_JPG_or_PNG(url)){
+							SendMessage(msg, POINTS_PICTURE_FORMAT);
+							return;
+						}
+						
+						updateData.Image_End = url;
+						try {
+							firebase.database().ref(updateData.ID).update({
+								'pts_end': updateData.PuntosFinales,
+								'image_end': updateData.Image_End
+							})
+							.then( function () {
+								SendMessage(msg, MSG_END);
+							})
+							.catch(function () {
+								console.log(e);
+								SendMessage(msg, MSG_END_ERROR);
+							});
+						}
+						catch(e) {
+							console.log(e);
+							SendMessage(msg, MSG_END_ERROR);
+							return;
+						}
+
+					}).catch(() => { Retry(msg); });
+				});
+			}).catch(() => { Retry(msg); });
+		});
+	}
+	
+	return;
+
 	if(cmd === `${prefix}registro`) {
 
 
