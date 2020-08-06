@@ -320,7 +320,7 @@ bot.on('message', msg=>{
 	}
 });
 
-bot.login(process.env.TOKEN);
+bot.login(process.env.token);
 
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
