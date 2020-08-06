@@ -6,6 +6,7 @@ const bot = new Discord.Client({disableEveryone: true});
 
 // DE AQUI PABAJO PUEDES EDITAR COSAS ==========================================================================
 // IDs
+
 const SERVER_ID 		= '265204990455316492';
 const ALERT_CHANNEL_ID 	= '719103654908395530';
 
@@ -14,6 +15,7 @@ const IJN = '719104540917366826';
 const USS = '719104274524799088';
 const KMS = '719104614162628678';
 const DGN = '719105046633250886';
+
 
 const SERVERS = ["amagi", "avrora", "lexington", "sandy", "washington"];
 const FACTIONS = ["hms", "uss", "ijn", "kms", "dgn"];
@@ -32,7 +34,7 @@ const RESPONSE_TIME_SECONDS = 60;
 // MESSAGES
 const KICK = 'https://cdn.discordapp.com/attachments/709111440665214987/709496458692526201/ezgif.com-resize.png';
 
-const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/719147050251452426/Skybound_1920x1080.jpg`;
+const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/740912326814728262/Spaces_Aurora_Noctis.jpg`;
 
 const NOMBRE_M 				= '¿Cuál es tu nombre en el juego?';
 const UID_M 				= '¿Cuál es tu UID en el juego?';
@@ -108,67 +110,31 @@ bot.on('message', msg=>{
 	if(cmd === `${prefix}help`){
 		return msg.channel.send(HELP_M);
 	}
-	
-	if(cmd === `${prefix}final`) {
 
-		let updateData = { ID: msg.author.id, PuntosFinales: 0, Image_End: '' };
+	/*
+	if(cmd === `${prefix}purga`) {
+		
+		const guild = bot.guilds.resolve(SERVER_ID);
 
-		msg.channel.send(PTS_END_M).then(() => {
-			msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-			.then((collected) => {
-				const points = collected.first().content.replace(/\s/g,'');
-				if(!Number.isInteger(parseInt(points))) {
-					SendMessage(msg, POINTS_ERROR_M);
-					return;
-				}
-
-				updateData.PuntosFinales = parseInt(points);
-
-				if(updateData.PuntosIniciales < 0) {
-					SendMessage(msg, POINTS_LESS_THAN_0_M);
-					return;
-				}
-				
-				msg.channel.send(PTS_END__IMAGE_M).then(()=>{
-					msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-					.then((collected) => {
-						const url = collected.first().attachments.first().url;
-						if(!is_JPG_or_PNG(url)){
-							SendMessage(msg, POINTS_PICTURE_FORMAT);
-							return;
-						}
-						
-						updateData.Image_End = url;
-						try {
-							firebase.database().ref(updateData.ID).update({
-								'pts_end': updateData.PuntosFinales,
-								'image_end': updateData.Image_End
-							})
-							.then( function () {
-								SendMessage(msg, MSG_END);
-							})
-							.catch(function () {
-								console.log(e);
-								SendMessage(msg, MSG_END_ERROR);
-							});
-						}
-						catch(e) {
-							console.log(e);
-							SendMessage(msg, MSG_END_ERROR);
-							return;
-						}
-
-					}).catch(() => { Retry(msg); });
-				});
-			}).catch(() => { Retry(msg); });
-		});
+		
+		guild.roles.resolve(HMS).members.forEach(
+			e => e.roles.remove(HMS).then(console.log("HMS borrado"))
+		);
+		guild.roles.resolve(IJN).members.forEach(
+			e => e.roles.remove(IJN).then(console.log("IJN borrado"))
+		);
+		guild.roles.resolve(KMS).members.forEach(
+			e => e.roles.remove(KMS).then(console.log("KMS borrado"))
+		);
+		
+		guild.roles.resolve(KMS).members.forEach(
+			e => e.roles.remove(KMS).then(console.log("USS borrado"))
+		);
+		
 	}
-	
-	return;
+	*/
 
-	if(cmd === `${prefix}registro`) {
-
-
+	if(cmd === `${prefix}registro2`) {
 
 			let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
 
@@ -295,9 +261,66 @@ bot.on('message', msg=>{
 			});
 
 	}
+
+	return;
+	
+	if(cmd === `${prefix}final`) {
+
+		let updateData = { ID: msg.author.id, PuntosFinales: 0, Image_End: '' };
+
+		msg.channel.send(PTS_END_M).then(() => {
+			msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+			.then((collected) => {
+				const points = collected.first().content.replace(/\s/g,'');
+				if(!Number.isInteger(parseInt(points))) {
+					SendMessage(msg, POINTS_ERROR_M);
+					return;
+				}
+
+				updateData.PuntosFinales = parseInt(points);
+
+				if(updateData.PuntosIniciales < 0) {
+					SendMessage(msg, POINTS_LESS_THAN_0_M);
+					return;
+				}
+				
+				msg.channel.send(PTS_END__IMAGE_M).then(()=>{
+					msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+					.then((collected) => {
+						const url = collected.first().attachments.first().url;
+						if(!is_JPG_or_PNG(url)){
+							SendMessage(msg, POINTS_PICTURE_FORMAT);
+							return;
+						}
+						
+						updateData.Image_End = url;
+						try {
+							firebase.database().ref(updateData.ID).update({
+								'pts_end': updateData.PuntosFinales,
+								'image_end': updateData.Image_End
+							})
+							.then( function () {
+								SendMessage(msg, MSG_END);
+							})
+							.catch(function () {
+								console.log(e);
+								SendMessage(msg, MSG_END_ERROR);
+							});
+						}
+						catch(e) {
+							console.log(e);
+							SendMessage(msg, MSG_END_ERROR);
+							return;
+						}
+
+					}).catch(() => { Retry(msg); });
+				});
+			}).catch(() => { Retry(msg); });
+		});
+	}
 });
 
-bot.login(process.env.token);
+bot.login(process.env.TOKEN);
 
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
@@ -314,7 +337,7 @@ function SendNotification(msg, faction) {
 	const m = new MessageEmbed()
 	.setColor(FACTION2DATA[faction].Color)
 	.setTitle(`${msg.author.username} se ha unido a ${FACTION2DATA[faction].Fullname}!`)
-	.setFooter('Skybound Oratorio event', "https://azurlane.koumakan.jp/w/images/5/59/Iris_orig.png")
+	.setFooter('Aurora Noctis event', "https://cdn.discordapp.com/attachments/456503841060421634/740931226105544764/RoyalNavy.png")
 	.setImage(FACTION2DATA[faction].Banner);
 	
 	alertChannel.send(`${msg.author}`);
