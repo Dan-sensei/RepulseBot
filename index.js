@@ -134,7 +134,7 @@ bot.on('message', msg=>{
 	}
 	*/
 
-	if(cmd === `${prefix}registro2`) {
+	if(cmd === `${prefix}registro`) {
 
 			let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
 
