@@ -34,7 +34,7 @@ const RESPONSE_TIME_SECONDS = 60;
 // MESSAGES
 const KICK = 'https://cdn.discordapp.com/attachments/709111440665214987/709496458692526201/ezgif.com-resize.png';
 
-const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/740912326814728262/Spaces_Aurora_Noctis.jpg`;
+const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/741776086400106599/Spaces_Aurora_Noctis.jpg`;
 
 const NOMBRE_M 				= '¿Cuál es tu nombre en el juego?';
 const UID_M 				= '¿Cuál es tu UID en el juego?';
