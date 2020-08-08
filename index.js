@@ -60,7 +60,7 @@ const ROL_ASSIGN_SUCCESS_M2 = ' en el servidor, ve a verlo!\nSi aún no tienes e
 const ROL_ASSIGN_ERROR_M 	= 'Aunque parece que ha habido un problema al asignarte el rol de tu facción, contacta con algún moderador!';
 
 const TIMEOUT = '\nVaya! Parece que has tardado demasiado en responder. Para reintentar el registro, escribe el comando "!registro" de nuevo en este chat ^_^';
-
+const TIMEOUT2 = '\nVaya! Parece que has tardado demasiado en responder. Para volver a intentarlo, escribe el comando "!puntos" de nuevo en este chat ^_^';
 
 const PTS_END_M = '¿Cuántos puntos tienes?';
 const PTS_END__IMAGE_M = 'Para terminar, envíame una captura dónde se vean los puntos';
@@ -318,9 +318,9 @@ bot.on('message', msg=>{
 							return;
 						}
 
-					}).catch(() => { Retry(msg); });
+					}).catch(() => { RetryPts(msg); });
 				});
-			}).catch(() => { Retry(msg); });
+			}).catch(() => { RetryPts(msg); });
 		});
 	}
 });
@@ -330,6 +330,11 @@ bot.login(process.env.token);
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
 }
+
+function RetryPts(handler){
+	SendMessage(handler, TIMEOUT2);
+}
+
 
 function SendMessage(handler, message) {
 	handler.channel.send(message);
