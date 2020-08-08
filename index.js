@@ -64,8 +64,8 @@ const TIMEOUT = '\nVaya! Parece que has tardado demasiado en responder. Para rei
 
 const PTS_END_M = '¿Cuántos puntos tienes?';
 const PTS_END__IMAGE_M = 'Para terminar, envíame una captura dónde se vean los puntos';
-const MSG_END = 'Datos guardados\nGracias por participar!';
-const MSG_END_ERROR = 'Parece que ha habido un problema al intentar guardar tus datos ~(>_<~).\nVuelve a intentarlo en unos minutos, si el problema persiste, ponte en contacto con Space.';
+const MSG_END = 'Datos guardados!\n';
+const MSG_END_ERROR = 'Parece que ha habido un problema al intentar guardar tus datos ~(>_<~).\nVuelve a intentarlo en unos minutos, si el problema persiste, ponte en contacto con Espeis.';
 
 // DE AQUI PABAJO NO TOQUES NADA ===============================================================================
 
@@ -136,138 +136,143 @@ bot.on('message', msg=>{
 
 	if(cmd === `${prefix}registro`) {
 
-			let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
+		let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
 
-			msg.channel.send(NOMBRE_M).then(() => {
-				msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-				.then((collected) => {
-					registerData.Nombre = collected.first().content;
-					msg.channel.send(UID_M).then(()=>{
-						msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-						.then((collected) => {
-							const uid = collected.first().content.replace(/\s/g,'');
-							if(!Number.isInteger(parseInt(uid))) {
-								SendMessage(msg, UID_ERROR_M);
-								return;
-							}
-							registerData.UID = uid;
-							msg.channel.send(SERVER_M).then(()=>{
-								msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-								.then((collected) => {
-									const server_input = collected.first().content.toLowerCase().replace(/\s/g,'');
-									if(!SERVERS.includes(server_input)){
-										SendMessage(msg, SERVER_ERROR_M);
-										return;
-									}
-									registerData.Server = server_input;
-									msg.channel.send(FACTION_M).then(()=>{
-										msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-										.then((collected) => {
-											const faction_input = collected.first().content.toLowerCase().replace(/\s/g,'');
-											if(!FACTIONS.includes(faction_input)) {
-												SendMessage(msg, FACTION_ERROR_M);
-												return;
-											}
-											registerData.Faccion = faction_input;
+		msg.channel.send(NOMBRE_M).then(() => {
+			msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+			.then((collected) => {
+				registerData.Nombre = collected.first().content;
+				msg.channel.send(UID_M).then(()=>{
+					msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+					.then((collected) => {
+						const uid = collected.first().content.replace(/\s/g,'');
+						if(!Number.isInteger(parseInt(uid))) {
+							SendMessage(msg, UID_ERROR_M);
+							return;
+						}
+						registerData.UID = uid;
+						msg.channel.send(SERVER_M).then(()=>{
+							msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+							.then((collected) => {
+								const server_input = collected.first().content.toLowerCase().replace(/\s/g,'');
+								if(!SERVERS.includes(server_input)){
+									SendMessage(msg, SERVER_ERROR_M);
+									return;
+								}
+								registerData.Server = server_input;
+								msg.channel.send(FACTION_M).then(()=>{
+									msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+									.then((collected) => {
+										const faction_input = collected.first().content.toLowerCase().replace(/\s/g,'');
+										if(!FACTIONS.includes(faction_input)) {
+											SendMessage(msg, FACTION_ERROR_M);
+											return;
+										}
+										registerData.Faccion = faction_input;
 
-											msg.channel.send(POINTS_M).then(()=>{
-												msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-												.then((collected) => {
-													const points = collected.first().content.replace(/\s/g,'');
-													if(!Number.isInteger(parseInt(points))) {
-														SendMessage(msg, POINTS_ERROR_M);
-														return;
-													}
+										msg.channel.send(POINTS_M).then(()=>{
+											msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+											.then((collected) => {
+												const points = collected.first().content.replace(/\s/g,'');
+												if(!Number.isInteger(parseInt(points))) {
+													SendMessage(msg, POINTS_ERROR_M);
+													return;
+												}
 
-													registerData.PuntosIniciales = parseInt(points);
+												registerData.PuntosIniciales = parseInt(points);
 
-													if(registerData.PuntosIniciales < 0) {
-														SendMessage(msg, POINTS_LESS_THAN_0_M);
-														return;
-													}
+												if(registerData.PuntosIniciales < 0) {
+													SendMessage(msg, POINTS_LESS_THAN_0_M);
+													return;
+												}
 
-													msg.channel.send(POINTS_PICTURE_M).then(()=>{
-														msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-														.then((collected) => {
-															const url = collected.first().attachments.first().url;
-															if(!is_JPG_or_PNG(url)){
-																SendMessage(msg, POINTS_PICTURE_FORMAT);
-																return;
-															}
-															
-															registerData.Image_Start = url;
+												msg.channel.send(POINTS_PICTURE_M).then(()=>{
+													msg.channel.awaitMessages(response => response.attachments.size > 0, {max: 1, time: RESPONSE_TIME, errors: ['time']})
+													.then((collected) => {
+														const url = collected.first().attachments.first().url;
+														if(!is_JPG_or_PNG(url)){
+															SendMessage(msg, POINTS_PICTURE_FORMAT);
+															return;
+														}
+														
+														registerData.Image_Start = url;
 
-															try {
-																firebase.database().ref(registerData.ID).set({
-																	'id': registerData.ID,
-																	'uid': registerData.UID,
-																	'username': registerData.Nombre,
-																	'server': registerData.Server,
-																	'faccion': registerData.Faccion,
-																	'pts_start': registerData.PuntosIniciales,
-																	'image_start': registerData.Image_Start
-																})
-																.then( function () {
-																	SendMessage(msg, REGISTRO_COMPLETADO_M);
-																	SendNotification(msg, registerData.Faccion);
-																	
-																	try {
-																		const guild = bot.guilds.resolve(SERVER_ID);
-																		const user  = guild.members.resolve(registerData.ID);
-																		let f = true;
-																		if(user) {
-																			user.roles.remove([HMS, USS, IJN, KMS, DGN]).then(function(){
-																				user.roles.add(FACTION2DATA[registerData.Faccion].RoleID)
-																				.then(function () {
-																					SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
-																				})
-																				.catch(function () {
-																					SendMessage(msg, ROL_ASSIGN_ERROR_M);
-																				});
+														try {
+															firebase.database().ref(registerData.ID).set({
+																'id': registerData.ID,
+																'uid': registerData.UID,
+																'username': registerData.Nombre,
+																'server': registerData.Server,
+																'faccion': registerData.Faccion,
+																'pts_start': registerData.PuntosIniciales,
+																'image_start': registerData.Image_Start
+															})
+															.then( function () {
+																SendMessage(msg, REGISTRO_COMPLETADO_M);
+																SendNotification(msg, registerData.Faccion);
+																
+																try {
+																	const guild = bot.guilds.resolve(SERVER_ID);
+																	const user  = guild.members.resolve(registerData.ID);
+																	let f = true;
+																	if(user) {
+																		user.roles.remove([HMS, USS, IJN, KMS, DGN]).then(function(){
+																			user.roles.add(FACTION2DATA[registerData.Faccion].RoleID)
+																			.then(function () {
+																				SendMessage(msg, ROL_ASSIGN_SUCCESS_M1 + registerData.Faccion.toUpperCase() + ROL_ASSIGN_SUCCESS_M2);
+																			})
+																			.catch(function () {
+																				SendMessage(msg, ROL_ASSIGN_ERROR_M);
 																			});
-																		}
-																	} catch(e) {
-																		console.log(e);
-																		SendMessage(msg, ROL_ASSIGN_ERROR_M);
+																		});
 																	}
-																})
-																.catch(function () {
+																} catch(e) {
 																	console.log(e);
 																	SendMessage(msg, ROL_ASSIGN_ERROR_M);
-																});
-															}
-															catch(e) {
+																}
+															})
+															.catch(function () {
 																console.log(e);
-																SendMessage(msg, REGISTRO_ERROR_M);
-																return;
-															}
-
-															
-
-														}).catch((e) => {
+																SendMessage(msg, ROL_ASSIGN_ERROR_M);
+															});
+														}
+														catch(e) {
 															console.log(e);
-															Retry(msg)
-														});
+															SendMessage(msg, REGISTRO_ERROR_M);
+															return;
+														}
+
+														
+
+													}).catch((e) => {
+														console.log(e);
+														Retry(msg)
 													});
-												}).catch((e) => { Retry(msg); });
-											});
-										}).catch(() => { Retry(msg); });
-									});
-								}).catch(() => { Retry(msg); });
-							});
-						}).catch(() => { Retry(msg); });
-					});
-				}).catch(() => { Retry(msg); });
-			});
+												});
+											}).catch((e) => { Retry(msg); });
+										});
+									}).catch(() => { Retry(msg); });
+								});
+							}).catch(() => { Retry(msg); });
+						});
+					}).catch(() => { Retry(msg); });
+				});
+			}).catch(() => { Retry(msg); });
+		});
 
 	}
-
-	return;
 	
-	if(cmd === `${prefix}final`) {
+	if(cmd === `${prefix}puntos`) {
 
 		let updateData = { ID: msg.author.id, PuntosFinales: 0, Image_End: '' };
 
+		firebase.database().ref(updateData.ID).once('value', function(check) {
+			if(!check.exists()) {
+				msg.channel.send('No estás registrado!\nUtiliza primero el comando !registro');
+				return;
+			}
+		});
+		
 		msg.channel.send(PTS_END_M).then(() => {
 			msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
 			.then((collected) => {
