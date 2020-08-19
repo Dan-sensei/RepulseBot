@@ -142,13 +142,11 @@ bot.on('message', msg=>{
 				let DATA = Object.entries(data.val());
 				DATA.forEach(function(e) {
 					e = e[1];
-					
 					if(e.id) {	
-						const u_  = g_.members.resolve(e.id).then(()=>{
-							if(u_) {
-								u_.send(REMEMBER);
-							}
-						});
+						const u_ = g_.members.resolve(e.id);
+						if(u_) {
+							u_.send(REMEMBER);
+						}
 					}
 				});
 			}
