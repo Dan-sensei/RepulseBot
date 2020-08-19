@@ -49,6 +49,8 @@ const POINTS_LESS_THAN_0_M 	= 'No pongas números negativos! (╬ Ò ‸ Ó)\nVu
 const POINTS_PICTURE_M 		= 'Por último, envíame una screenshot donde se vean los puntos en formato JPG/PNG';
 const POINTS_PICTURE_FORMAT = 'Sólo JPG o PNG!\nVuelve a empezar!\n' + KICK;
 
+const REMEMBER = "Skikikans os recordamos que el evnto de Aurora Noctis termina en unas horas, no os olvidéis de actualizar vuestros puntos con **!puntos** para ver que facción se alza con la victoria";
+
 const REGISTRO_COMPLETADO_M = 'Registro completado! Tu participación ha sido guardada! Ｏ(≧▽≦)Ｏ';
 const REGISTRO_ERROR_M 		= 'Parece que ha habido un problema al intentar guardar tus datos ~(>_<~).\nVuelve a intentarlo en unos minutos, si el problema persiste, ponte en contacto con Space.';
 
