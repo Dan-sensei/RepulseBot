@@ -134,6 +134,27 @@ bot.on('message', msg=>{
 	}
 	*/
 
+	if(cmd == `${prefix}remember_`) {
+		const g_ = bot.guilds.resolve(SERVER_ID);
+		firebase.database().ref().once('value').then(function(data) {
+			const d_val = data.val();
+			if(d_val != null) {
+				let DATA = Object.entries(data.val());
+				DATA.forEach(function(e) {
+					e = e[1];
+					
+					if(e.id) {	
+						const u_  = g_.members.resolve(e.id).then(()=>{
+							if(u_) {
+								u_.send(REMEMBER);
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
 	if(cmd === `${prefix}registro`) {
 
 		let registerData = {ID: msg.author.id, Nombre: '', UID: '', Server: '', Faccion: '', PuntosIniciales: 0, Image_Start: ''}
