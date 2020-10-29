@@ -18,14 +18,13 @@ const DGN = '719105046633250886';
 
 
 const SERVERS = ["amagi", "avrora", "lexington", "sandy", "washington"];
-const FACTIONS = ["hms", "uss", "ijn", "kms", "dgn"];
+const FACTIONS = ["hms", "uss", "ijn", "kms"];
 const FACTION2DATA = 
 {
 	"hms": { Fullname: "Royal Navy", 	RoleID: HMS, Color: 15128575, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072251195555930/Royal_Navy.png" },
 	"uss": { Fullname: "Eagle Union", 	RoleID: USS, Color: 7193589, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072248096096276/Eagle_Union.png" },
 	"ijn": { Fullname: "Sakura Empire", RoleID: IJN, Color: 14064895, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072252928065616/Sakura_Empire.png" },
 	"kms": { Fullname: "Ironblood", 	RoleID: KMS, Color: 16758435, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/715072249803309086/Ironblood.png" },
-	"dgn": { Fullname: "DGNrados", 	RoleID: DGN, Color: 7077768, 	Banner: "https://cdn.discordapp.com/attachments/456503841060421634/719105888979255366/DGNrados.png" },
 }
 
 // Tiempo que tarda Repulse en madarte a la mierda por lento
@@ -34,15 +33,15 @@ const RESPONSE_TIME_SECONDS = 60;
 // MESSAGES
 const KICK = 'https://cdn.discordapp.com/attachments/709111440665214987/709496458692526201/ezgif.com-resize.png';
 
-const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/741776086400106599/Spaces_Aurora_Noctis.jpg`;
+const HELP_M = `https://cdn.discordapp.com/attachments/676881737262956546/771290891860049920/Universe_in_Unison_.jpg`;
 
 const NOMBRE_M 				= '¿Cuál es tu nombre en el juego?';
 const UID_M 				= '¿Cuál es tu UID en el juego?';
 const UID_ERROR_M			= 'No introduzcas valores no numéricos!\nVuelve a empezar!\n' + KICK;
 const SERVER_M 				= '¿En qué servidor juegas?```amagi avrora lexington sandy washington```';
 const SERVER_ERROR_M 		= 'Ese servidor no existe!\nLos servidores disponibles son:\n```amagi avrora lexington sandy washington```\nVuelve a empezar!\n' + KICK;
-const FACTION_M 			= '¿A qué facción apoyas?```HMS USS IJN KMS DGN```';
-const FACTION_ERROR_M 		= 'Esa facción no existe!, las facciones disponibles son:\n```HMS USS IJN KMS DGN```\nVuelve a empezar!\n' + KICK;
+const FACTION_M 			= '¿A qué facción apoyas?```HMS USS IJN KMS```';
+const FACTION_ERROR_M 		= 'Esa facción no existe!, las facciones disponibles son:\n```HMS USS IJN KMS```\nVuelve a empezar!\n' + KICK;
 const POINTS_M 				= '¿Cuántos puntos tienes? Ej: 62500';
 const POINTS_ERROR_M 		= 'No has introducido un número! ＼| ￣ヘ￣|／\nVuelve a empezar!\n' + KICK;
 const POINTS_LESS_THAN_0_M 	= 'No pongas números negativos! (╬ Ò ‸ Ó)\nVuelve a empezar!\n' + KICK;
@@ -109,15 +108,10 @@ bot.on('message', msg=>{
 	let cmd = messageArray[0];
 	let args = messageArray.slice(1);
 	
-	if(cmd === `${prefix}help`){
-		return msg.channel.send(HELP_M);
-	}
-
 	/*
 	if(cmd === `${prefix}purga`) {
 		
 		const guild = bot.guilds.resolve(SERVER_ID);
-
 		
 		guild.roles.resolve(HMS).members.forEach(
 			e => e.roles.remove(HMS).then(console.log("HMS borrado"))
@@ -128,14 +122,13 @@ bot.on('message', msg=>{
 		guild.roles.resolve(KMS).members.forEach(
 			e => e.roles.remove(KMS).then(console.log("KMS borrado"))
 		);
-		
 		guild.roles.resolve(KMS).members.forEach(
 			e => e.roles.remove(KMS).then(console.log("USS borrado"))
 		);
 		
 	}
 	*/
-
+	/*
 	if(cmd == `${prefix}remember_`) {
 		const g_ = bot.guilds.resolve(SERVER_ID);
 		firebase.database().ref().once('value').then(function(data) {
@@ -153,6 +146,10 @@ bot.on('message', msg=>{
 				});
 			}
 		});
+	}
+	*/
+	if(cmd === `${prefix}help`){
+		return msg.channel.send(HELP_M);
 	}
 
 	if(cmd === `${prefix}registro`) {
@@ -172,15 +169,7 @@ bot.on('message', msg=>{
 							return;
 						}
 						registerData.UID = uid;
-						msg.channel.send(SERVER_M).then(()=>{
-							msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
-							.then((collected) => {
-								const server_input = collected.first().content.toLowerCase().replace(/\s/g,'');
-								if(!SERVERS.includes(server_input)){
-									SendMessage(msg, SERVER_ERROR_M);
-									return;
-								}
-								registerData.Server = server_input;
+						
 								msg.channel.send(FACTION_M).then(()=>{
 									msg.channel.awaitMessages(response => response.content, {max: 1, time: RESPONSE_TIME, errors: ['time']})
 									.then((collected) => {
@@ -274,8 +263,6 @@ bot.on('message', msg=>{
 										});
 									}).catch(() => { Retry(msg); });
 								});
-							}).catch(() => { Retry(msg); });
-						});
 					}).catch(() => { Retry(msg); });
 				});
 			}).catch(() => { Retry(msg); });
@@ -346,7 +333,7 @@ bot.on('message', msg=>{
 	}
 });
 
-bot.login(process.env.token);
+bot.login("NzA5MDYwNTg5OTU5NTEyMTA2.XrgaIg.9i3TksG7YHbGm6bcn4leOOxz0gg");
 
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
