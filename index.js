@@ -333,7 +333,7 @@ bot.on('message', msg=>{
 	}
 });
 
-bot.login("NzA5MDYwNTg5OTU5NTEyMTA2.XrgaIg.9i3TksG7YHbGm6bcn4leOOxz0gg");
+bot.login(process.env.token);
 
 function Retry(handler){
 	SendMessage(handler, TIMEOUT);
